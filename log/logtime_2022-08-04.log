@@ -1,0 +1,6 @@
+
+2022-08-04 03:01:06-DEBUG-测试01
+2022-08-04 03:01:06-DEBUG-测试02
+2022-08-04 03:01:06-INFO-测试abc
+2022-08-04 03:07:35-DEBUG-连接数据库出错：'sqlOperation' object has no attribute 'host1'
+2022-08-04 03:07:35-DEBUG-连接数据库出错：'sqlOperation' object has no attribute 'host1'

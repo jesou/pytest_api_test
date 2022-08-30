@@ -1,0 +1,22 @@
+# requestDefault.yaml
+
+server:
+  # 测试环境调用接口服务
+  test: http://10.18.18.112:32046/sdc
+  # uat环境调用接口服务
+  uat:
+      url: http://10.18.18.112:30085/sdc
+      user: auto_test
+      password: ac5yu7y22rjwtp9whc3lr03yccf2x8
+  # 生产环境
+  production: https://www.myvessel.cn/auth/login
+
+requestCon:
+  uatHeader: {"Accept":"application/json, text/plain, */*",
+            "Accept-Encoding":"gzip, deflate",
+            "Accept-Language":"zh-CN,zh;q=0.9",
+            "Connection":"keep-alive",
+            "Content-Type": "application/json",
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+             AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 
+             Safari/537.36"}
