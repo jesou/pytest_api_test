@@ -7,6 +7,9 @@ from utils.utilsLog import logRecord
 
 class RequestConfig:
     def __init__(self, yaml_file):
+        """
+        :param yaml_file: 读取yaml_file
+        """
         self.uat_url = yamlOptions(yaml_file).read_yaml('server')['uat']['url']
         self.user = yamlOptions(yaml_file).read_yaml('server')['uat']['user']
         self.password = yamlOptions(yaml_file).read_yaml('server')['uat']['password']
@@ -14,7 +17,7 @@ class RequestConfig:
         self.logger = logRecord().get_logger
 
     def request_basic_config(self, path: Text):
-        url = self.url + path
+        url = self.uat_url + path
         header = self.uat_header
         return url, header
 
@@ -34,7 +37,7 @@ class RequestConfig:
                                                  data=params, auth=HTTPBasicAuth(self.user, self.password))
                 return response_data
             except ValueError as e:
-                self.logger.debug('请求错误{}'.format(e))
+                self.logger.debug('请求失败{}'.format(e))
 
 
 if __name__ == '__main__':

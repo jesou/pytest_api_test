@@ -18,11 +18,11 @@ class TestClass:
                                        '"excludeSeaAreas":[], '
                                        '"withECA":true} ',
                                        'post').countResponseData()
-        assert data_num == 99
         if data_num == 99:
             testLogDefine().successLog(data_num)
         else:
             testLogDefine().failureLog(data_num, 99)
+        assert data_num == 99
 
 
 if __name__ == '__main__':

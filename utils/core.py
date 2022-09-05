@@ -34,6 +34,8 @@ class PostgresqlDataBasic(object):
         return len(self.sql)
 
 
+# auth2.0验证
+# 包括auth_key,basic_auth,client_credentials
 class authLogin(object):
     def __init__(self):
         self.timestamp = str(int(time.time()))
@@ -46,4 +48,3 @@ class authLogin(object):
         secret_md5 = hashlib.md5(secret.encode('utf-8'))
         auth_key = self.timestamp + '-' + self.rand + '-' + self.appId + '-' + secret_md5.hexdigest()
         return auth_key
-

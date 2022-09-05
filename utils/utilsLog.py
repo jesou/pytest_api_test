@@ -16,6 +16,7 @@ class logRecord(object):
         return project_log_path
 
     def logger_add(self):
+        logger.remove()
         logger.add(
             sink=self.get_log_path(),
             format="{time:YYYY-MM-DD hh:mm:ss}-{level}-{message}",
@@ -35,5 +36,3 @@ if __name__ == '__main__':
     """
     logger = logRecord().get_logger
     logger.debug('测试01')
-    logger.debug('测试02')
-    logger.info('测试abc')

@@ -1,4 +1,5 @@
 from utils.utilsRequests import RequestConfig
+import json
 
 
 class httpSamplerConfig:
@@ -14,4 +15,10 @@ class httpSamplerConfig:
     def ResponseData(self):
         return self.httpSampler().text
 
+    def mainData(self):
+        response_data = self.httpSampler().text
+        main_data = json.loads(response_data)['data']
+        return main_data
 
+    def responseStatus(self):
+        return self.httpSampler().status_code
