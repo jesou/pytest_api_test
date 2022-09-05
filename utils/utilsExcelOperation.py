@@ -5,7 +5,7 @@ import xlwt
 class excelOperation:
 
     def __init__(self):
-        self.file_path = 'C:/Users/admin/Desktop/testCase1.xls'
+        self.file_path = '../excelCase/testCase1.xls'
         self.sheet_name = 'Sheet1'
 
     def _read_xls(self):
