@@ -4,13 +4,11 @@ server:
   # 测试环境调用接口服务
   test: http://10.18.18.112:32046/sdc
   # uat环境调用接口服务
-  uat:
-      url: http://10.18.18.112:30085/sdc
+  url:
+      uat_url: http://10.18.18.112:30085/sdc/
+      production_url: https://voc.myvessel.cn/sdc/
       user: auto_test
       password: ac5yu7y22rjwtp9whc3lr03yccf2x8
-  # 生产环境
-  production: https://www.myvessel.cn/auth/login
-
 requestCon:
   uatHeader: {"Accept":"application/json, text/plain, */*",
             "Accept-Encoding":"gzip, deflate",

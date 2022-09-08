@@ -1,11 +1,13 @@
 import xlrd
+import os
 import xlwt
 
 
 class excelOperation:
 
     def __init__(self):
-        self.file_path = '../excelCase/testCase1.xls'
+        self.file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                      'excelCase/testCase2.xls')
         self.sheet_name = 'Sheet1'
 
     def _read_xls(self):
@@ -16,9 +18,9 @@ class excelOperation:
     def get_case_data(self):
         table = self._read_xls()
         row_num = table.nrows
-        cases_list = [table.row_values(i, start_colx=1, end_colx=None) for i in range(1, row_num) if table.cell_value(i,0) == 'Y']
-        return cases_list
+        for norw in range(1, row_num):
+            yield table.row_values(norw)
 
 
 if __name__ == '__main__':
-    excelOperation().get_case_data()
+    print(excelOperation().get_case_data())

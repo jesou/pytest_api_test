@@ -9,9 +9,9 @@ import pytest
 
 class PostgresqlDataBasic(object):
 
-    def __init__(self, url, params, method, sql=''):
+    def __init__(self, url, path, params, method, sql=''):
         self.sql = sql
-        self.response_data = httpSamplerConfig(url, params, method).ResponseData()
+        self.response_data = httpSamplerConfig(url, path, params, method).responseData()
 
     def sqlData(self):
         data = sqlOperation().searchDB(self.sql)
