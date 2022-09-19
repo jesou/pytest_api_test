@@ -1,0 +1,211 @@
+{
+  "uid" : "4cf3d62f6de8f59f",
+  "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
+  "fullName" : "testCase3.test_main[船舶分析数据接口-货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）-验证状态码200-critical-Y-v1/vessels/analytics/ports/sailing/time-post-data-{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}--with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month #timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;-{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data",
+  "historyId" : "6f95b7064f46e89b4b39ae196bc7e977",
+  "time" : {
+    "start" : 1663062566999,
+    "stop" : 1663062567190,
+    "duration" : 191
+  },
+  "description" : "\n    :param get_db: db数据\n    :return:\n    ",
+  "descriptionHtml" : "<pre><code>:param get_db: db数据\n:return:\n</code></pre>\n",
+  "status" : "failed",
+  "statusMessage" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936",
+  "statusTrace" : "api_type = '船舶分析数据接口', title = '货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）', purpose = '验证状态码200', severity = 'critical', is_skip = 'Y', url = 'v1/vessels/analytics/ports/sailing/time', method = 'post'\ndata_type = 'data'\nparams = '{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLo...\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'\nverify_content = ''\nsql = 'with port_dwt as (SELECT\\nep.port_code end_port_code,\\nMAX ( ep.name_cn ) end_port_name_cn,\\nMAX ( ep.name_en ) end_p...de)\\n\\nselect\\nSUM(port_dwt.dwt_sum) dwt_sum,\\nSUM(port_dwt.sail_sum) sail_sum\\nfrom port_dwt\\ngroup by end_port_code;'\nexpect_value = '{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}', get_db = <utils.utilPostgresql.sqlOperation object at 0x000001F5E3DD83A0>\n\n    @pytest.mark.parametrize(\"api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, \"\n                             \"sql, expect_value\", excelOperation().get_case_data())\n    def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, sql,\n                  expect_value, get_db):\n        \"\"\"\n        :param get_db: db数据\n        :return:\n        \"\"\"\n        production_url = yamlOptions('config/requestDefault.yaml').read_yaml('server')['url']['uat_url']\n        allure.dynamic.story(api_type)\n        allure.dynamic.title(title)\n        allure.dynamic.severity(severity)\n        allure.dynamic.link(production_url+url)\n        allure.dynamic.testcase(\"https://jira.csntcorp.com/secure/Tests.jspa#/testCase/SDC-T904\")\n        if is_skip.upper() == 'Y' or is_skip is None:\n            with allure.step('获取响应结果：'):\n                response_data = httpSamplerConfig(url=production_url, path=url, params=params, method=method).httpSampler(\n                    data_type)\n                # 使用后置sql执行\n                data_process.sql = sql\n                data_process.handle_sql(get_db)\n                # 断言\n                actual_value, expect_v = DataProcess.assert_result(response_data.json(), expect_value)\n>               assert actual_value == expect_v\nE               AssertionError: assert '682936' == '330483'\nE                 - 330483\nE                 + 682936\n\ntestCase3.py:40: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "newBroken" : false,
+  "newPassed" : false,
+  "retriesCount" : 4,
+  "retriesStatusChange" : false,
+  "beforeStages" : [ {
+    "name" : "get_db",
+    "time" : {
+      "start" : 1663062566892,
+      "stop" : 1663062566997,
+      "duration" : 105
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "description" : "\n    :param get_db: db数据\n    :return:\n    ",
+    "status" : "failed",
+    "statusMessage" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936",
+    "statusTrace" : "api_type = '船舶分析数据接口', title = '货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）', purpose = '验证状态码200', severity = 'critical', is_skip = 'Y', url = 'v1/vessels/analytics/ports/sailing/time', method = 'post'\ndata_type = 'data'\nparams = '{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLo...\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'\nverify_content = ''\nsql = 'with port_dwt as (SELECT\\nep.port_code end_port_code,\\nMAX ( ep.name_cn ) end_port_name_cn,\\nMAX ( ep.name_en ) end_p...de)\\n\\nselect\\nSUM(port_dwt.dwt_sum) dwt_sum,\\nSUM(port_dwt.sail_sum) sail_sum\\nfrom port_dwt\\ngroup by end_port_code;'\nexpect_value = '{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}', get_db = <utils.utilPostgresql.sqlOperation object at 0x000001F5E3DD83A0>\n\n    @pytest.mark.parametrize(\"api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, \"\n                             \"sql, expect_value\", excelOperation().get_case_data())\n    def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, sql,\n                  expect_value, get_db):\n        \"\"\"\n        :param get_db: db数据\n        :return:\n        \"\"\"\n        production_url = yamlOptions('config/requestDefault.yaml').read_yaml('server')['url']['uat_url']\n        allure.dynamic.story(api_type)\n        allure.dynamic.title(title)\n        allure.dynamic.severity(severity)\n        allure.dynamic.link(production_url+url)\n        allure.dynamic.testcase(\"https://jira.csntcorp.com/secure/Tests.jspa#/testCase/SDC-T904\")\n        if is_skip.upper() == 'Y' or is_skip is None:\n            with allure.step('获取响应结果：'):\n                response_data = httpSamplerConfig(url=production_url, path=url, params=params, method=method).httpSampler(\n                    data_type)\n                # 使用后置sql执行\n                data_process.sql = sql\n                data_process.handle_sql(get_db)\n                # 断言\n                actual_value, expect_v = DataProcess.assert_result(response_data.json(), expect_value)\n>               assert actual_value == expect_v\nE               AssertionError: assert '682936' == '330483'\nE                 - 330483\nE                 + 682936\n\ntestCase3.py:40: AssertionError",
+    "steps" : [ {
+      "name" : "获取响应结果：",
+      "time" : {
+        "start" : 1663062567004,
+        "stop" : 1663062567189,
+        "duration" : 185
+      },
+      "status" : "failed",
+      "statusMessage" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936\n",
+      "statusTrace" : "  File \"D:\\auto_test\\pytest_api_test\\testCase\\testCase3.py\", line 40, in test_main\n    assert actual_value == expect_v\n",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : true,
+      "stepsCount" : 0,
+      "hasContent" : true
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : true,
+    "stepsCount" : 1,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "get_db::0",
+    "time" : {
+      "start" : 1663062567610,
+      "stop" : 1663062567611,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "story",
+    "value" : "船舶分析数据接口"
+  }, {
+    "name" : "severity",
+    "value" : "critical"
+  }, {
+    "name" : "suite",
+    "value" : "testCase3"
+  }, {
+    "name" : "subSuite",
+    "value" : "test_main[\\u8239\\u8236\\u5206\\u6790\\u6570\\u636e\\u63a5\\u53e3-\\u8d27\\u91cf\\u7edf\\u8ba1_\\u8239\\u8236\\u6e2f\\u53e3\\u95f4\\u822a\\u884c\\u8f7d\\u91cd\\u5428\\u6309\\u65f6\\u95f4\\u7edf\\u8ba1 (\\u66f2\\u7ebf)\\uff08\\u9a8c\\u8bc1\\u65e5\\u8fd4\\u56de\\u7684\\u8239\\u8236dwt\\u548c\\u8258\\u6b21\\uff09-\\u9a8c\\u8bc1\\u72b6\\u6001\\u7801200-critical-Y-v1/vessels/analytics/ports/sailing/time-post-data-{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}--with port_dwt as (SELECT\\nep.port_code end_port_code,\\nMAX ( ep.name_cn ) end_port_name_cn,\\nMAX ( ep.name_en ) end_port_name_en,\\nSUM ( fm_vessel.dwt ) dwt_sum,\\nCOUNT ( 1 ) sail_sum\\nFROM\\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\\nAND dt_vessel_dynamics.mmsi = ANY (\\nSELECT\\nfm_vessel.mmsi\\nFROM\\nsdc_dw.fm_vessel\\nWHERE\\n1 = 1\\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month "
+  }, {
+    "name" : "host",
+    "value" : "LAPTOP-DVS119VN"
+  }, {
+    "name" : "thread",
+    "value" : "9424-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "testCase3"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "api_type",
+    "value" : "'船舶分析数据接口'"
+  }, {
+    "name" : "data_type",
+    "value" : "'data'"
+  }, {
+    "name" : "expect_value",
+    "value" : "'{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}'"
+  }, {
+    "name" : "is_skip",
+    "value" : "'Y'"
+  }, {
+    "name" : "method",
+    "value" : "'post'"
+  }, {
+    "name" : "params",
+    "value" : "'{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'"
+  }, {
+    "name" : "purpose",
+    "value" : "'验证状态码200'"
+  }, {
+    "name" : "severity",
+    "value" : "'critical'"
+  }, {
+    "name" : "sql",
+    "value" : "'with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\n)\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;'"
+  }, {
+    "name" : "title",
+    "value" : "'货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）'"
+  }, {
+    "name" : "url",
+    "value" : "'v1/vessels/analytics/ports/sailing/time'"
+  }, {
+    "name" : "verify_content",
+    "value" : "''"
+  } ],
+  "links" : [ {
+    "name" : "http://10.18.18.112:30085/sdc/v1/vessels/analytics/ports/sailing/time",
+    "url" : "http://10.18.18.112:30085/sdc/v1/vessels/analytics/ports/sailing/time",
+    "type" : "link"
+  }, {
+    "name" : "https://jira.csntcorp.com/secure/Tests.jspa#/testCase/SDC-T904",
+    "url" : "https://jira.csntcorp.com/secure/Tests.jspa#/testCase/SDC-T904",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "critical",
+    "retries" : [ {
+      "uid" : "9fa917811ac51698",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936",
+      "time" : {
+        "start" : 1663062132829,
+        "stop" : 1663062133026,
+        "duration" : 197
+      }
+    }, {
+      "uid" : "20f01b0e4947447e",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert '682936' == '319680'\n  - 319680\n  + 682936",
+      "time" : {
+        "start" : 1663059018393,
+        "stop" : 1663059018725,
+        "duration" : 332
+      }
+    }, {
+      "uid" : "16513b7c3a2c560",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert '682936' == '319680'\n  - 319680\n  + 682936",
+      "time" : {
+        "start" : 1663058459728,
+        "stop" : 1663058459949,
+        "duration" : 221
+      }
+    }, {
+      "uid" : "6faeb460c3e4c92",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert '682936' == '283998'\n  - 283998\n  + 682936",
+      "time" : {
+        "start" : 1663055333270,
+        "stop" : 1663055333456,
+        "duration" : 186
+      }
+    } ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "tags" : [ ]
+  },
+  "source" : "4cf3d62f6de8f59f.json",
+  "parameterValues" : [ "'船舶分析数据接口'", "'data'", "'{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}'", "'Y'", "'post'", "'{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'", "'验证状态码200'", "'critical'", "'with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\n)\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;'", "'货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）'", "'v1/vessels/analytics/ports/sailing/time'", "''" ]
+}

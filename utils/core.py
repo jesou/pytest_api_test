@@ -4,7 +4,6 @@ from utils.utilsLoadYaml import yamlOptions
 import json
 import time
 import hashlib
-import pytest
 
 
 class PostgresqlDataBasic(object):
@@ -15,14 +14,12 @@ class PostgresqlDataBasic(object):
 
     def sqlData(self):
         data = sqlOperation().searchDB(self.sql)
-        datas = []
         data_length = len(data)
         if data_length is not None and data_length >= 0:
             if data_length == 1:
                 return str(data[0])
             if data_length > 1:
-                for i in range(data_length):
-                    datas.append(str(data[i]))
+                datas = [str(data(i) for i in range(data_length))]
                 return datas
 
     def countResponseData(self):

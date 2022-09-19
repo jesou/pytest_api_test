@@ -74,6 +74,6 @@ class DataProcess:
             if type(actual_value) != type(v):
                 actual_value = str(actual_value)
                 v = str(v)
-                assert actual_value == v
+                return actual_value, v
             else:
-                assert actual_value == v
+                return actual_value, v

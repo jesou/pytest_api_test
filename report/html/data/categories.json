@@ -1,0 +1,51 @@
+{
+  "uid" : "4b4757e66a1912dae1a509f688f20b0f",
+  "name" : "categories",
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "AssertionError: assert '682936' == '283998'\n  - 283998\n  + 682936",
+      "children" : [ {
+        "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
+        "uid" : "fc71c315ee81d58f",
+        "parentUid" : "2f2de9a5f87fc869bffe183602c2b056",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663051528888,
+          "stop" : 1663051529082,
+          "duration" : 194
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "['船舶分析数据接口', '货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）', '验证状态码200', 'Y', 'v1/vessels/analytics/ports/sailing/time', 'post', 'data', '{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}', '', \"with port_dwt as (SELECT\\nep.port_code end_port_code,\\nMAX ( ep.name_cn ) end_port_name_cn,\\nMAX ( ep.name_en ) end_port_name_en,\\nSUM ( fm_vessel.dwt ) dwt_sum,\\nCOUNT ( 1 ) sail_sum\\nFROM\\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\\nAND dt_vessel_dynamics.mmsi = ANY (\\nSELECT\\nfm_vessel.mmsi\\nFROM\\nsdc_dw.fm_vessel\\nWHERE\\n1 = 1\\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\\n)\\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\\nAND ais_abnormal_times <= 0\\nAND leg_start_port_code <> leg_end_port_code\\nAND leg_start_port_code <> 'AAAAA'\\nAND leg_end_port_code <> 'AAAAA'\\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\\nAND ep.port_code IN ('CNSHA')\\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\\nGROUP BY\\nsp.port_code,\\nep.port_code)\\n\\nselect\\nSUM(port_dwt.dwt_sum) dwt_sum,\\nSUM(port_dwt.sail_sum) sail_sum\\nfrom port_dwt\\ngroup by end_port_code;\", '{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}']" ]
+      } ],
+      "uid" : "2f2de9a5f87fc869bffe183602c2b056"
+    }, {
+      "name" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936",
+      "children" : [ {
+        "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
+        "uid" : "4cf3d62f6de8f59f",
+        "parentUid" : "fddcbea8cb91782eb86fbd42690c21d3",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663062566999,
+          "stop" : 1663062567190,
+          "duration" : 191
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 4,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'船舶分析数据接口'", "'data'", "'{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}'", "'Y'", "'post'", "'{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'", "'验证状态码200'", "'critical'", "'with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\n)\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;'", "'货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）'", "'v1/vessels/analytics/ports/sailing/time'", "''" ]
+      } ],
+      "uid" : "fddcbea8cb91782eb86fbd42690c21d3"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ]
+}

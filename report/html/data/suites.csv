@@ -1,0 +1,10 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"failed","Tue Sep 13 17:49:26 CST 2022","Tue Sep 13 17:49:27 CST 2022","191","","testCase3","test_main[\u8239\u8236\u5206\u6790\u6570\u636e\u63a5\u53e3-\u8d27\u91cf\u7edf\u8ba1_\u8239\u8236\u6e2f\u53e3\u95f4\u822a\u884c\u8f7d\u91cd\u5428\u6309\u65f6\u95f4\u7edf\u8ba1 (\u66f2\u7ebf)\uff08\u9a8c\u8bc1\u65e5\u8fd4\u56de\u7684\u8239\u8236dwt\u548c\u8258\u6b21\uff09-\u9a8c\u8bc1\u72b6\u6001\u7801200-critical-Y-v1/vessels/analytics/ports/sailing/time-post-data-{""startTime"":""2022-09-08 00:00:00"",""endTime"":""2022-09-08 16:30:04"",""cargoTypes"":[],""cargoTypeUnknown"":false,""isFullLoad"":"""",""startPortCodes"":[],""endPortCodes"":[""CNSHA""],""nextPortCodes"":[],""endPortBerthUuids"":[],""mmsiList"":[],""group"":""DAY""}--with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month ","","","货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）","
+    :param get_db: db数据
+    :return:
+    "
+"failed","Tue Sep 13 14:45:28 CST 2022","Tue Sep 13 14:45:29 CST 2022","194","","testCase3","","","","货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）","
+    :param case: 测试用例
+    :param get_db: db数据
+    :return:
+    "
