@@ -1,1 +1,0 @@
-{'code': '', 'data': [{'yearCode': '2022', 'groupCode': '20220908', 'groupName': '2022年9月8日', 'dwtSum': 682936, 'sailSum': 76}], 'status': 200, 'success': True, 'message': None}

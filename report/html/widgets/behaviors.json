@@ -1,15 +1,114 @@
 {
-  "total" : 1,
+  "total" : 28,
   "items" : [ {
     "uid" : "9897f1b14fb2d8a0cf487a60c50b0c33",
     "name" : "船舶分析数据接口",
     "statistic" : {
-      "failed" : 2,
+      "failed" : 3,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 0,
+      "passed" : 65,
       "unknown" : 0,
-      "total" : 2
+      "total" : 68
+    }
+  }, {
+    "uid" : "98c862dd49c1434c37816bb4fefd8ca9",
+    "name" : "气象数据接口",
+    "statistic" : {
+      "failed" : 3,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 12,
+      "unknown" : 0,
+      "total" : 15
+    }
+  }, {
+    "uid" : "b8985f2647438fbdf1532144d6bfa76a",
+    "name" : "船舶基础数据接口",
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 54,
+      "unknown" : 0,
+      "total" : 55
+    }
+  }, {
+    "uid" : "ea8e37e76e06a399e04a97ccc767d2a5",
+    "name" : "船舶动态数据接口",
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 51,
+      "unknown" : 0,
+      "total" : 52
+    }
+  }, {
+    "uid" : "034b4dc5923a6c92a8c3d5826431053d",
+    "name" : "基础数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 30,
+      "unknown" : 0,
+      "total" : 30
+    }
+  }, {
+    "uid" : "dd95a3927d58233bcf334066da2105b3",
+    "name" : "港口分析数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 28,
+      "unknown" : 0,
+      "total" : 28
+    }
+  }, {
+    "uid" : "2d12ef6568d8fa85f179b6d52bdc8105",
+    "name" : "港口基础数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 27,
+      "unknown" : 0,
+      "total" : 27
+    }
+  }, {
+    "uid" : "3a18a5831784f741817c5c68ef6cf373",
+    "name" : "航线分析数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 19,
+      "unknown" : 0,
+      "total" : 19
+    }
+  }, {
+    "uid" : "50314178e1ab018ee92033d4b6e14bec",
+    "name" : "航线数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 16,
+      "unknown" : 0,
+      "total" : 16
+    }
+  }, {
+    "uid" : "197c75abebe663820fb53613b344858f",
+    "name" : "港口泊位数据接口",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 11,
+      "unknown" : 0,
+      "total" : 11
     }
   } ]
 }

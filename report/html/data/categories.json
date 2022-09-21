@@ -7,7 +7,7 @@
       "name" : "AssertionError: assert '682936' == '283998'\n  - 283998\n  + 682936",
       "children" : [ {
         "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
-        "uid" : "fc71c315ee81d58f",
+        "uid" : "e0aba290d3a777ed",
         "parentUid" : "2f2de9a5f87fc869bffe183602c2b056",
         "status" : "failed",
         "time" : {
@@ -25,26 +25,136 @@
       } ],
       "uid" : "2f2de9a5f87fc869bffe183602c2b056"
     }, {
-      "name" : "AssertionError: assert '682936' == '330483'\n  - 330483\n  + 682936",
+      "name" : "AssertionError: assert '630277' == '263559'\n  - 263559\n  + 630277",
       "children" : [ {
         "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
-        "uid" : "4cf3d62f6de8f59f",
-        "parentUid" : "fddcbea8cb91782eb86fbd42690c21d3",
+        "uid" : "76190fbd7a2fb6d7",
+        "parentUid" : "d19fb01f75793a6a746ccaf1a2e73b5b",
         "status" : "failed",
         "time" : {
-          "start" : 1663062566999,
-          "stop" : 1663062567190,
-          "duration" : 191
+          "start" : 1663646135229,
+          "stop" : 1663646135519,
+          "duration" : 290
         },
         "flaky" : false,
         "newFailed" : false,
         "newPassed" : false,
         "newBroken" : false,
-        "retriesCount" : 4,
+        "retriesCount" : 5,
         "retriesStatusChange" : false,
         "parameters" : [ "'船舶分析数据接口'", "'data'", "'{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}'", "'Y'", "'post'", "'{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'", "'验证状态码200'", "'critical'", "'with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\n)\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;'", "'货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）'", "'v1/vessels/analytics/ports/sailing/time'", "''" ]
+      }, {
+        "name" : "货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）",
+        "uid" : "205269fd7bf37365",
+        "parentUid" : "d19fb01f75793a6a746ccaf1a2e73b5b",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646136012,
+          "stop" : 1663646136189,
+          "duration" : 177
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'船舶分析数据接口'", "'data'", "'{\"$.data[0].dwtSum\":\"$dwt_sum\",\"$.data[0].sailSum\":\"$sail_sum\"}'", "'Y'", "'post'", "'{\"startTime\":\"2022-09-08 00:00:00\",\"endTime\":\"2022-09-08 16:30:04\",\"cargoTypes\":[],\"cargoTypeUnknown\":false,\"isFullLoad\":\"\",\"startPortCodes\":[],\"endPortCodes\":[\"CNSHA\"],\"nextPortCodes\":[],\"endPortBerthUuids\":[],\"mmsiList\":[],\"group\":\"DAY\"}'", "'验证返回的结果'", "'critical'", "'with port_dwt as (SELECT\nep.port_code end_port_code,\nMAX ( ep.name_cn ) end_port_name_cn,\nMAX ( ep.name_en ) end_port_name_en,\nSUM ( fm_vessel.dwt ) dwt_sum,\nCOUNT ( 1 ) sail_sum\nFROM\nsdc_dw.v_vessel_dynamics_berth dt_vessel_dynamics\nINNER JOIN sdc_dw.fm_port sp ON dt_vessel_dynamics.leg_start_port_code = sp.port_code\nAND dt_vessel_dynamics.mmsi = ANY (\nSELECT\nfm_vessel.mmsi\nFROM\nsdc_dw.fm_vessel\nWHERE\n1 = 1\nAND ( retire_year_month IS NULL OR to_date( fm_vessel.retire_year_month :: VARCHAR, 'YYYYMMDD' ) > to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp )\n)\nAND dt_vessel_dynamics.start_postime >= to_char(current_timestamp,'yyyy-MM-dd 00:00:00')::timestamp\nAND dt_vessel_dynamics.start_postime <= to_char(current_timestamp,'yyyy-MM-dd hh24:mi:ss')::timestamp\nAND ais_abnormal_times <= 0\nAND leg_start_port_code <> leg_end_port_code\nAND leg_start_port_code <> 'AAAAA'\nAND leg_end_port_code <> 'AAAAA'\nINNER JOIN sdc_dw.fm_port ep ON dt_vessel_dynamics.leg_end_port_code = ep.port_code\nAND ep.port_code IN ('CNSHA')\nINNER JOIN sdc_dw.fm_vessel ON fm_vessel.mmsi = dt_vessel_dynamics.mmsi\nLEFT JOIN sdc_dw.fm_port_berth ON fm_port_berth.berth_uuid = dt_vessel_dynamics.leg_start_berth_uuid\nGROUP BY\nsp.port_code,\nep.port_code)\n\nselect\nSUM(port_dwt.dwt_sum) dwt_sum,\nSUM(port_dwt.sail_sum) sail_sum\nfrom port_dwt\ngroup by end_port_code;'", "'货量统计_船舶港口间航行载重吨按时间统计 (曲线)（验证日返回的船舶dwt和艘次）'", "'v1/vessels/analytics/ports/sailing/time'", "''" ]
       } ],
-      "uid" : "fddcbea8cb91782eb86fbd42690c21d3"
+      "uid" : "d19fb01f75793a6a746ccaf1a2e73b5b"
+    }, {
+      "name" : "AssertionError: assert 400 == 200",
+      "children" : [ {
+        "name" : "船舶摘要信息",
+        "uid" : "1a90b1ae9870d870",
+        "parentUid" : "ce128faf6653943b3b1dffec1a6b2a45",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646154817,
+          "stop" : 1663646154883,
+          "duration" : 66
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'船舶基础数据接口'", "'params'", "'{\"$.status\":200}'", "'Y'", "'get'", "414777000.0", "'验证状态码200'", "'critical'", "''", "'船舶摘要信息'", "'v1/vessels/abstract/info/{mmsi}'", "''" ]
+      }, {
+        "name" : "按MMSI查询船舶最新动态信息",
+        "uid" : "6f6c6dcf59d7c345",
+        "parentUid" : "ce128faf6653943b3b1dffec1a6b2a45",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646159112,
+          "stop" : 1663646159175,
+          "duration" : 63
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'船舶动态数据接口'", "'params'", "'{\"$.status\":200}'", "'Y'", "'get'", "477269400.0", "'验证状态码200'", "'critical'", "''", "'按MMSI查询船舶最新动态信息'", "'v1/vessels/status/current/{mmsi}'", "''" ]
+      }, {
+        "name" : "根据经纬度查询指定时间的气象信息",
+        "uid" : "6e4ba63a561b4ed0",
+        "parentUid" : "ce128faf6653943b3b1dffec1a6b2a45",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646294518,
+          "stop" : 1663646294594,
+          "duration" : 76
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'气象数据接口'", "'params'", "'{\"$.status\":200}'", "'Y'", "'get'", "'2020-12-01 01:00,40,128'", "'验证状态码200'", "'critical'", "''", "'根据经纬度查询指定时间的气象信息'", "'v1/weather/wni/info/{dataTime},{lat},{lon}'", "''" ]
+      } ],
+      "uid" : "ce128faf6653943b3b1dffec1a6b2a45"
+    }, {
+      "name" : "AssertionError: assert 404 == 200",
+      "children" : [ {
+        "name" : "根据年份及来源查询历史台风详情列表",
+        "uid" : "46483e70eb648f5f",
+        "parentUid" : "b25c4aabe91d64cc9979d0addb30d0b1",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646295624,
+          "stop" : 1663646295744,
+          "duration" : 120
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'气象数据接口'", "'params'", "'{\"$.status\":200}'", "'Y'", "'get'", "'2020/wni'", "'验证状态码200'", "'critical'", "''", "'根据年份及来源查询历史台风详情列表'", "'v1/weather/typhoon/history/infos/{year}/{source}'", "''" ]
+      }, {
+        "name" : "根据年份及来源查询历史台风名称列表",
+        "uid" : "9899a22fcfab3eb9",
+        "parentUid" : "b25c4aabe91d64cc9979d0addb30d0b1",
+        "status" : "failed",
+        "time" : {
+          "start" : 1663646299559,
+          "stop" : 1663646299688,
+          "duration" : 129
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "'气象数据接口'", "'params'", "'{\"$.status\":200}'", "'Y'", "'get'", "'2020/wni'", "'验证状态码200'", "'critical'", "''", "'根据年份及来源查询历史台风名称列表'", "'v1/weather/typhoon/history/names/{year}/{source}'", "''" ]
+      } ],
+      "uid" : "b25c4aabe91d64cc9979d0addb30d0b1"
     } ],
     "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
   } ]

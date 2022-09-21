@@ -15,7 +15,8 @@ data_process = DataProcess()
 
 
 @pytest.mark.parametrize("api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, "
-                         "sql, expect_value", excelOperation().get_case_data())
+                         "sql, expect_value", excelOperation().get_case_data(table_names=['testMain.xls'],
+                                                                             sheet_names=['Sheet2']))
 def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, sql,
               expect_value, get_db):
     """
@@ -27,7 +28,7 @@ def test_main(api_type, title, purpose, severity, is_skip, url, method, data_typ
     allure.dynamic.title(title)
     allure.dynamic.severity(severity)
     allure.dynamic.link(production_url + url)
-    allure.dynamic.testcase("https://jira.csntcorp.com/secure/Tests.jspa#/testCase/SDC-T904")
+    allure.dynamic.testcase("")
     if is_skip.upper() == 'Y' or is_skip is None:
         with allure.step('获取响应结果：'):
             response_data = httpSamplerConfig(url=production_url, path=url, params=params, method=method).httpSampler(
@@ -43,3 +44,4 @@ def test_main(api_type, title, purpose, severity, is_skip, url, method, data_typ
 if __name__ == '__main__':
     pytest.main(['-s', 'testCase3.py'])
     os.system('allure generate --clean ../report/result -o ../report/html')
+    os.system('allure server ../report/result')

@@ -1,4 +1,5 @@
 import requests
+import re
 from requests.auth import HTTPBasicAuth
 from typing import Text
 from utils.utilsLoadYaml import yamlOptions
@@ -11,6 +12,7 @@ class RequestConfig:
         :param yaml_file: 读取yaml_file，获取基本信息
         """
         self.logger = logRecord().get_logger
+        self.pattern = r'{[A-Za-z0-9|/]+}'
         try:
             self.uat_url = yamlOptions(yaml_file).read_yaml('server')['url']['uat_url']
             self.production_url = yamlOptions(yaml_file).read_yaml('server')['url']['production_url']
@@ -24,41 +26,69 @@ class RequestConfig:
         header = self.uat_header
         return url, header
 
+    def _request_auth(self, url: Text, header, params=None, method="get", use_auth=True):
+        if use_auth:
+            response_data = self._request_method(url=url, headers=header, data=params, method=method, auth=HTTPBasicAuth(self.user, self.password))
+        else:
+            response_data = self._request_method(url=url, header=header, data=params, method=method)
+        return response_data
+
     def request_sampler(self, url: Text, params=None, method="get", postType=''):
         url_data, header = self.request_basic_config(url)
         if type(params) is str:
             params = params.encode('UTF-8').decode("latin1")
         else:
             params = str(params)
+        if '{' in url:
+            if ',' in params:
+                params_list = params.split(',')
+                for i in params_list:
+                    url = re.sub(self.pattern, i, url, count=1)
+            elif params is not None or params != '':
+                url = re.sub(self.pattern, params, url, count=1)
+            params = ''
         if method.upper() == 'GET':
-            self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
-                             % (url, method.lower(), header, params))
             if params == '' or params is None:
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url, method.lower(), header, params))
                 response_data = requests.get(url=url, headers=header, auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
                 return response_data
             elif '{' not in params:
                 url = url_data + params
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url, method.lower(), header, params))
                 response_data = requests.get(url=url, headers=header, auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
                 return response_data
             else:
-                response_data = requests.get(url=url_data, headers=header, params=params,
-                                             auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url_data, method.lower(), header, params))
+                response_data = requests.get(url=url_data, headers=header, params=params, auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
                 return response_data
         elif method.upper() == 'POST':
-            self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
-                             % (url, method.lower(), header, params))
             if postType == 'params':
                 url = url_data + str(params)
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url_data, method.lower(), header, params))
                 response_data = requests.post(url=url, headers=header, auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
                 return response_data
             else:
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url, method.lower(), header, params))
                 response_data = requests.post(url=url_data, headers=header, data=params,
                                               auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
             return response_data
         else:
             try:
+                self.logger.info('请求地址：%r, 请求方法：%s, 请求头：%s, 请求参数：%s'
+                                 % (url_data, method.lower(), header, params))
                 response_data = requests.request(method.lower(), url=url_data, headers=header,
                                                  data=params, auth=HTTPBasicAuth(self.user, self.password))
+                self.logger.info('响应码: %r' % response_data.status_code)
                 return response_data
             except ValueError as e:
                 self.logger.debug('请求失败{}'.format(e))
@@ -73,4 +103,3 @@ if __name__ == '__main__':
                                '"withECA":true} ',
                         method='post'
                         )
-    print(type(response.text))
