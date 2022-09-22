@@ -15,8 +15,7 @@ data_process = DataProcess()
 
 
 @pytest.mark.parametrize("api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, "
-                         "sql, expect_value", excelOperation().get_case_data(table_names=['testMain.xls'],
-                                                                             sheet_names=['Sheet2']))
+                         "sql, expect_value", excelOperation().get_case_data(sheet_names=['status_correct_cases']))
 def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, params, verify_content, sql,
               expect_value, get_db):
     """

@@ -11,23 +11,29 @@ class excelOperation:
     def _read_xls(self, table_name, sheet_names=''):
         file_path = os.path.join(self.project_file, table_name)
         data = xlrd.open_workbook(file_path)
+        table_sheet_names = data.sheet_names()
         if sheet_names == '' or sheet_names is None:
             # 获取所有的sheet_list
-            sheet_names = data.sheet_names()
-            sheet_list = [data.sheet_by_name(i) for i in sheet_names]
+            sheet_list = [data.sheet_by_name(i) for i in table_sheet_names]
+            return sheet_list
         else:
-            sheet_list = [data.sheet_by_name(i) for i in sheet_names]
-        return sheet_list
+            table_sheet_names = [i for i in set(table_sheet_names) if i in set(sheet_names)]
+            if len(table_sheet_names) != 0:
+                sheet_list = [data.sheet_by_name(i) for i in table_sheet_names]
+                return sheet_list
+            else:
+                return table_sheet_names
 
     def get_case_data(self, table_names='', sheet_names=''):
         if table_names == '' or table_names is None:
             table_names = os.listdir(self.project_file)
         for table_name in table_names:
             sheet_list = self._read_xls(table_name, sheet_names)
-            for table in sheet_list:
-                row_num = table.nrows
-                for norw in range(1, row_num):
-                    yield table.row_values(norw)
+            if len(sheet_list) != 0:
+                for table in sheet_list:
+                    row_num = table.nrows
+                    for norw in range(1, row_num):
+                        yield table.row_values(norw)
 
     def get_column_data(self, column_value=0):
         file_list = os.listdir(self.project_file)

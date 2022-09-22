@@ -51,7 +51,7 @@ class getExcelCase(object):
         use_apis = excelOperation().get_column_data(column)
         unused_apis = list(set(all_apis).difference(set(use_apis)))
         apiCase_rate = round((len(all_apis) - len(unused_apis)) / len(all_apis), 2)
-        return unused_apis, apiCase_rate
+        return len(all_apis), len(use_apis), unused_apis, apiCase_rate
 
 
 # auth2.0验证

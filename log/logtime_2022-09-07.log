@@ -1,1 +1,0 @@
-2022-09-07 04:17:26-INFO-开始执行sql：select mmsi,imo from sdc_dw.fm_vessel limit 10
