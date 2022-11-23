@@ -20,7 +20,7 @@ class logRecord(object):
         logger.add(
             sink=self.get_log_path(),
             format="{time:YYYY-MM-DD hh:mm:ss}-{level}-{message}",
-            retention='10 day',
+            retention='1h',
             encoding="utf-8",
             enqueue=True
         )

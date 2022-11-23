@@ -1,6 +1,8 @@
+import decimal
 import json
-from datetime import datetime
+import datetime
 from decimal import Decimal
+from jsonpath import jsonpath
 
 from string import Template
 
@@ -8,18 +10,29 @@ from utils.utilsLoadYaml import yamlOptions
 from utils.utilsLog import logRecord
 import psycopg2
 import psycopg2.extras
+import platform
 
 
 class sqlOperation:
-    def __init__(self):
-        self._result = None
+    def __init__(self, path='config/uat/configData.yaml', env='sdc_uat'):
         self.logger = logRecord().get_logger
-        self.databases = yamlOptions('config/configData.yaml').read_yaml("database")
-        self.host = self.databases['host']
-        self.port = self.databases['port']
-        self.database = self.databases['database']
-        self.username = self.databases['username']
-        self.password = self.databases['password']
+        self._result = None
+        self.path = path
+        self.databases = yamlOptions(path).read_yaml("database")
+
+        #  判断系统环境，按不同环境获取不同的数据库地址
+        if platform.system().lower() == 'windows' or platform.system().lower() == 'macos':
+            self.host = self.databases[env]['aliyun_host']
+            self.port = self.databases[env]['aliyun_port']
+        elif platform.system().lower() == 'linux':
+            self.host = self.databases[env]['proxy_host']
+            self.port = self.databases[env]['proxy_port']
+        else:
+            self.logger.error('该环境不支持连接数据库')
+
+        self.database = self.databases[env]['database']
+        self.username = self.databases[env]['username']
+        self.password = self.databases[env]['password']
         self.db = psycopg2.connect(host=self.host,
                                    port=self.port,
                                    database=self.database,
@@ -40,7 +53,7 @@ class sqlOperation:
             for k, v in value.items():
                 if isinstance(
                         v, (
-                                datetime,
+                                datetime.datetime,
                                 Decimal,
                         ),
                 ):
@@ -63,6 +76,12 @@ class sqlOperation:
         self.cursor.close()
         self.db.close()
 
+    def datetime_hadler(self, result):
+        if isinstance(result, datetime.date):
+            return "{}-{}-{}".format(result.year, result.month, result.day)
+        elif isinstance(result, decimal.Decimal):
+            return str(result)
+
     def searchDB(self, sql: str):
         db, cursor = self.connectionDB()
         try:
@@ -70,11 +89,14 @@ class sqlOperation:
             self.logger.info('开始执行sql：{}'.format(sql))
         except Exception as e:
             self.logger.debug('查询SQL出错：{}'.format(e))
-        self.result = cursor.fetchone()
+        sql_result_json = json.dumps(cursor.fetchone(), default=self.datetime_hadler)
+        if not isinstance(sql_result_json, dict):
+            sql_result_json = eval(sql_result_json)
+        self.result = sql_result_json
         db.commit()
 
 
 if __name__ == '__main__':
     abc = sqlOperation()
-    abc.searchDB('select mmsi,imo from sdc_dw.fm_vessel limit 10')
+    abc.searchDB("SELECT oil_price wti_price,price_date wti_pricedate FROM sdc_dw.ex_bunker_crude_oil_price where is_new = 1  and oil_type = 1")
     print(abc.result)

@@ -5,7 +5,7 @@ from utils.utilsLog import logRecord
 
 class yamlOptions:
 
-    def __init__(self, yaml_file='config/configData.yaml'):
+    def __init__(self, yaml_file):
         self.logger = logRecord().get_logger
         self.yaml_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                       yaml_file)
@@ -25,9 +25,9 @@ class yamlOptions:
                 yaml_data = yaml.full_load(f)
                 return yaml_data
         except ValueError as e:
-            self.logger.debug("yaml文件错误")
+            self.logger.debug("yaml文件错误:{}".format(e))
 
 
 if __name__ == '__main__':
-    print(yamlOptions("config/configData.yaml").read_yaml('database')['host'])
-    print(yamlOptions("config/configData.yaml").read_full_yaml())
+    print(yamlOptions("config/uat/configData.yaml").read_yaml('database')['sdc_uat'])
+    print(yamlOptions("config/uat/configData.yaml").read_full_yaml())

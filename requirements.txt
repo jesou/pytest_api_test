@@ -1,6 +1,6 @@
 allure_python_commons==2.9.45
-fastapi==0.82.0
-loguru
+jsonpath==0.82
+loguru==0.4.1
 psycopg2==2.9.3
 pytest==6.2.5
 PyYAML==6.0

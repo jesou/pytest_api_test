@@ -8,8 +8,7 @@ class excelOperation:
     def __init__(self):
         self.project_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'excelCase')
 
-    def _read_xls(self, table_name, sheet_names=''):
-        file_path = os.path.join(self.project_file, table_name)
+    def _read_xls(self, file_path, sheet_names=''):
         data = xlrd.open_workbook(file_path)
         table_sheet_names = data.sheet_names()
         if sheet_names == '' or sheet_names is None:
@@ -36,16 +35,23 @@ class excelOperation:
                         yield table.row_values(norw)
 
     def get_column_data(self, column_value=0):
-        file_list = os.listdir(self.project_file)
+        """获取所有的api列表"""
         api_list = []
-        for file in file_list:
-            table_list = self._read_xls(file)
-            for table in table_list:
-                api_rows = table.nrows
-                for i in range(1, api_rows):
-                    if table.cell_value(i, column_value) not in api_list and table.cell_value(i, 4) != 'N':
-                        api_list.append(table.cell_value(i, column_value))
+        for filepath, dirnames, filenames in os.walk(self.project_file):
+            for filename in filenames:
+                file_path = os.path.join(filepath, filename)
+                table_list = self._read_xls(file_path)
+                for table in table_list:
+                    api_rows = table.nrows
+                    for i in range(1, api_rows):
+                        if table.cell_value(i, column_value) not in api_list and table.cell_value(i, 4) != 'N':
+                            api_list.append(table.cell_value(i, column_value))
         return api_list
+
+    # def get_all_files(self, file_path):
+    #     for filepath, dirnames, filenames in os.walk(file_path):
+    #         for filename in filenames:
+    #             yield os.path.join(filepath, filename)
 
 
 if __name__ == '__main__':
