@@ -1,0 +1,26 @@
+# requestDefault.yaml
+
+server:
+  # uat环境调用接口服务
+  url:
+      uat_url: http://10.18.18.112:30085/sdc
+      production_url: https://voc.myvessel.cn/sdc
+      user: auto_test
+      password: ac5yu7y22rjwtp9whc3lr03yccf2x8
+requestCon:
+  uatHeader: {"Accept":"application/json, text/plain, */*",
+            "Accept-Encoding":"gzip, deflate",
+            "Accept-Language":"zh-CN,zh;q=0.9",
+            "Connection":"keep-alive",
+            "Content-Type": "application/json",
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+             AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 
+             Safari/537.36"}
+
+apiData:
+  # api文档的地址
+  url: http://10.18.21.100:31394/v2/api-docs
+  header:  {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+            Chrome/103.0.0.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "zh-CN,zh;q=0.9"}
