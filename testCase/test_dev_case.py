@@ -6,7 +6,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pytest
 from utils.core import httpSamplerConfig
 from utils.utilsExcelDataProcess import DataProcess
-from utils.utilsRequests import RequestConfig
 from utils.utilsExcelOperation import excelOperation
 from utils.utilsLoadYaml import yamlOptions
 from utils.reportConfig import allureReportConfig

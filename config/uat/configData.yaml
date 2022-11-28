@@ -2,21 +2,20 @@
 
 # SDC生产数据库
 database:
-  sdc_uat:
-    # 外网数据库地址（本地使用）
-    aliyun_host: cstc-sdc.rwlb.polardb-pg-public.rds.aliyuncs.com
-    # 外网端口号（本地使用）
-    aliyun_port: 1921
-    # 数据库代理地址（jenkins服务器使用）
-    proxy_host: 10.18.2.20
-    # 数据库代理端口号（jenkins服务器使用）
-    proxy_port: 40103
-    # database
-    database: sdc-prd
-    # 用户名
-    username: uat
-    # 密码
-    password: 5RsyXDEcUa
+  # 外网数据库地址（本地使用）
+  aliyun_host: cstc-sdc.rwlb.polardb-pg-public.rds.aliyuncs.com
+  # 外网端口号（本地使用）
+  aliyun_port: 1921
+  # 数据库代理地址（jenkins服务器使用）
+  proxy_host: 10.18.2.20
+  # 数据库代理端口号（jenkins服务器使用）
+  proxy_port: 40103
+  # database
+  database_name: sdc-prd
+  # 用户名
+  username: uat
+  # 密码
+  password: 5RsyXDEcUa
 
 file_path:
   # 用例数据路径
@@ -29,6 +28,6 @@ file_path:
 auth_login:
   # api_key的用户和密码
   api_key:
-    appId: 00015412_APP01
-    appSecret: rvdkc20kimy5w1jgt9wqhjmpteokfq
+    appId: auto_test
+    appSecret: ac5yu7y22rjwtp9whc3lr03yccf2x8
 

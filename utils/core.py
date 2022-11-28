@@ -3,6 +3,7 @@ from copy import deepcopy
 from utils.utilPostgresql import sqlOperation
 from utils.utilsExcelOperation import excelOperation
 from config.httpDefaultManger import httpSamplerConfig
+from config.config import Config
 from utils.utilsLoadYaml import yamlOptions
 
 import requests
@@ -18,6 +19,7 @@ class PostgresqlDataBasic(object):
     def __init__(self, url, path, params, method, sql=''):
         self.sql = sql
         self.response_data = httpSamplerConfig(url, path, params, method).responseData()
+        sql_path = Config().database_host
 
     def sqlData(self):
         data_value = sqlOperation().searchDB(self.sql)
@@ -40,9 +42,9 @@ class PostgresqlDataBasic(object):
 
 class getExcelCase(object):
     def __init__(self):
-        self.path = 'config/uat/requestDefault.yaml'
-        self.url = yamlOptions(self.path).read_yaml('apiData')['url']
-        self.header = yamlOptions(self.path).read_yaml('apiData')['header']
+        self.config = Config()
+        self.url = self.config.sdc_api_url
+        self.header = self.config.sdc_api_header
         self.unused_apis = ['/v1/trade/cargo/ore/port/statistics',
                             '/v1/trade/cargo/ore/port/list']
         self.unused_apiGroup = ['Swagger文档数据接口', '缓存管理接口', 'API缓存配置接口',
@@ -106,11 +108,12 @@ class getExcelCase(object):
 # auth2.0验证
 # 包括auth_key,basic_auth,client_credentials
 class authLogin(object):
-    def __init__(self):
+    def __init__(self, env='UAT'):
         self.timestamp = str(int(time.time()))
         self.rand = '0'
-        self.appId = yamlOptions().read_yaml('auth_login')['api_key']['appId']
-        self.appSecret = yamlOptions().read_yaml('auth_login')['api_key']['appSecret']
+        self.config = Config(env)
+        self.appId = self.config.auth_appId
+        self.appSecret = self.config.auth_appSecret
 
     def apiKeyLogin(self):
         secret = self.timestamp + '-' + self.rand + '-' + self.appId + '-' + self.appSecret

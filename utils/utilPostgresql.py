@@ -2,6 +2,7 @@ import decimal
 import json
 import datetime
 from decimal import Decimal
+from config.config import Config
 from jsonpath import jsonpath
 
 from string import Template
@@ -14,25 +15,24 @@ import platform
 
 
 class sqlOperation:
-    def __init__(self, path='config/uat/configData.yaml', env='sdc_uat'):
+    def __init__(self, env='UAT'):
         self.logger = logRecord().get_logger
         self._result = None
-        self.path = path
-        self.databases = yamlOptions(path).read_yaml("database")
+        self.config = Config(env)
 
         #  判断系统环境，按不同环境获取不同的数据库地址
         if platform.system().lower() == 'windows' or platform.system().lower() == 'macos':
-            self.host = self.databases[env]['aliyun_host']
-            self.port = self.databases[env]['aliyun_port']
+            self.host = self.config.database_host
+            self.port = self.config.database_port
         elif platform.system().lower() == 'linux':
-            self.host = self.databases[env]['proxy_host']
-            self.port = self.databases[env]['proxy_port']
+            self.host = self.config.proxy_host
+            self.port = self.config.proxy_host
         else:
             self.logger.error('该环境不支持连接数据库')
 
-        self.database = self.databases[env]['database']
-        self.username = self.databases[env]['username']
-        self.password = self.databases[env]['password']
+        self.database = self.config.database_name
+        self.username = self.config.database_username
+        self.password = self.config.database_password
         self.db = psycopg2.connect(host=self.host,
                                    port=self.port,
                                    database=self.database,

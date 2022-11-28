@@ -1,26 +1,28 @@
 import requests
 import re
-from requests.auth import HTTPBasicAuth
-from typing import Text
 
+from typing import Text
+from config.config import Config
+from requests.auth import HTTPBasicAuth
 from utils.reportConfig import allureReportConfig
 from utils.utilsLoadYaml import yamlOptions
 from utils.utilsLog import logRecord
 
 
 class RequestConfig:
-    def __init__(self, yaml_file):
+    def __init__(self, env='UAT'):
         """
-        :param yaml_file: 读取yaml_file，获取基本信息
+        :param env: 选择执行环境
         """
         self.logger = logRecord().get_logger
         self.pattern = r'{[A-Za-z0-9|/]+}'
+        self.config = Config(env)
         try:
-            self.uat_url = yamlOptions(yaml_file).read_yaml('server')['url']['uat_url']
-            self.production_url = yamlOptions(yaml_file).read_yaml('server')['url']['production_url']
-            self.user = yamlOptions(yaml_file).read_yaml('server')['url']['user']
-            self.password = yamlOptions(yaml_file).read_yaml('server')['url']['password']
-            self.uat_header = yamlOptions(yaml_file).read_yaml('requestCon')['uatHeader']
+            self.url = self.config.url
+            self.user = self.config.auth_appId
+            self.password = self.config.auth_appSecret
+            print(self.user, self.password)
+            self.uat_header = self.config.request_header
         except Exception as e:
             self.logger.exception('获取用例基本信息失败,{}'.format(e))
 
@@ -95,11 +97,12 @@ class RequestConfig:
 
 
 if __name__ == '__main__':
-    response = RequestConfig(yaml_file="config/requestDefault.yaml"). \
-        request_sampler('/v1/routes/routing/nodes',
-                        params='{"startPortCode":"CNWGQ","startPoint":{"lat":31.353633,"lon":121.617967},'
-                               '"endPortCode":"CNHUA", '
-                               '"endPoint":{"lat":38.316667,"lon":117.866667},"excludeNodes":[],"excludeSeaAreas":[],'
-                               '"withECA":true} ',
-                        method='post'
-                        )
+    RequestConfig()
+    # response = RequestConfig(). \
+    #     request_sampler(f'{Config().url}/v1/routes/routing/nodes',
+    #                     params='{"startPortCode":"CNWGQ","startPoint":{"lat":31.353633,"lon":121.617967},'
+    #                            '"endPortCode":"CNHUA", '
+    #                            '"endPoint":{"lat":38.316667,"lon":117.866667},"excludeNodes":[],"excludeSeaAreas":[],'
+    #                            '"withECA":true} ',
+    #                     method='post'
+    #                     )

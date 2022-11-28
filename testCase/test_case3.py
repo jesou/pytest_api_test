@@ -14,26 +14,24 @@ from utils.reportConfig import allureReportConfig
 data_process = DataProcess()
 
 
-@pytest.mark.flaky(reruns=2, reruns_delay=2)
+# @pytest.mark.flaky(reruns=2, reruns_delay=2)
 @pytest.mark.parametrize("api_type, title, purpose, severity, is_skip, url, method, data_type, data, extra, "
-                         "sql, expect_value", excelOperation().get_case_data(table_names=['sdc_vessel_dynamic_case.xls']
-                                                                             ))
+                         "sql, expect_value", excelOperation().get_case_data(table_names=['sdc_app_case.xls']))
 def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, data, extra, sql,
-              expect_value, get_db):
+              expect_value, get_db, get_env_config):
     """
     :param get_db: db数据
     :return:
     """
-    production_url = yamlOptions('config/uat/requestDefault.yaml').read_yaml('server')['url']['uat_url']
+    env, production_url = get_env_config
     # 设置allure样式
     allureReportConfig.dynamic_comment(feature=api_type, story=title, title=purpose,
                                        severity=severity, link=production_url + url)
 
     data_process.skip = is_skip
     data_process.sql = sql
-    db = get_db
     # 先执行pre_sql
-    pre_sql = data_process.pre_sql(url, db)
+    pre_sql = data_process.pre_sql(url, get_db)
     if not pre_sql:
         data_process.data_type = data_type
         data_process.handle_case(method, data)
@@ -43,7 +41,7 @@ def test_main(api_type, title, purpose, severity, is_skip, url, method, data_typ
         # 提取后置参数
         data_process.handle_extra(extra, response_data.json())
         # 使用后置sql执行
-        data_process.handle_sql(db)
+        data_process.handle_sql(get_db)
         # 断言
         DataProcess.assert_result(response_data.json(), expect_value)
     else:

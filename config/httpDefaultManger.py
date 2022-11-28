@@ -4,7 +4,7 @@ import json
 
 class httpSamplerConfig:
     def __init__(self, url, path, params, method):
-        self.response = RequestConfig(yaml_file="config/uat/requestDefault.yaml")
+        self.response = RequestConfig(env='UAT')
         self.url = url + path
         self.params = params
         self.method = method

@@ -7,12 +7,11 @@ class yamlOptions:
 
     def __init__(self, yaml_file):
         self.logger = logRecord().get_logger
-        self.yaml_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                                      yaml_file)
+        self.yaml_file = yaml_file
 
     def read_yaml(self, keyValue):
         try:
-            with open(self.yaml_path, "r", encoding="utf-8") as f:
+            with open(self.yaml_file, "r", encoding="utf-8") as f:
                 data = yaml.load(f, Loader=yaml.SafeLoader)
                 mainData = data[keyValue]
                 return mainData
@@ -21,7 +20,7 @@ class yamlOptions:
 
     def read_full_yaml(self):
         try:
-            with open(self.yaml_path, "r", encoding="utf-8") as f:
+            with open(self.yaml_file, "r", encoding="utf-8") as f:
                 yaml_data = yaml.full_load(f)
                 return yaml_data
         except ValueError as e:
