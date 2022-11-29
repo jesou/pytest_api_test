@@ -41,19 +41,11 @@ class allureReportConfig:
         :param severity: 用例等级
         :param link: 链接
         """
-        if feature is not None or feature != '':
-            allure.dynamic.feature(feature)
-        if story is not None or story != '':
-            allure.dynamic.story(story)
-        if title is not None or title != '':
-            allure.dynamic.title(title)
-        if testcase is not None or testcase != '':
-            allure.dynamic.testcase(testcase)
-        if issue is not None or issue != '':
-            allure.dynamic.testcase(issue)
-        if description is not None or description != '':
-            allure.dynamic.testcase(description)
-        if severity is not None or severity != '':
-            allure.dynamic.testcase(severity)
-        if link is not None or link != '':
-            allure.dynamic.testcase(link)
+        allure.dynamic.feature(feature) if feature is not None or feature != '' else 1
+        allure.dynamic.story(story) if story is not None or story != '' else 1
+        allure.dynamic.title(title) if title is not None or title != '' else 1
+        allure.dynamic.testcase(testcase) if testcase is not None or testcase != '' else 1
+        allure.dynamic.issue(issue) if testcase is not None or issue != '' else 1
+        allure.dynamic.description(description) if description is not None or description != '' else 1
+        allure.dynamic.severity(severity) if severity is not None or severity != '' else 1
+        allure.dynamic.link(link) if link is not None or link != '' else 1

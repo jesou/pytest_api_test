@@ -15,7 +15,7 @@ data_process = DataProcess()
 
 @pytest.mark.flaky(reruns=2, reruns_delay=2)
 @pytest.mark.parametrize("api_type, title, purpose, severity, is_skip, url, method, data_type, data, extra, "
-                         "sql, expect_value", excelOperation().get_case_data(table_names=['sdc_vessel_dynamic_case.xls']
+                         "sql, expect_value", excelOperation().get_case_data(table_names=['dev_cases.xls']
                                                                              ))
 def test_main(api_type, title, purpose, severity, is_skip, url, method, data_type, data, extra, sql,
               expect_value, get_db, get_env_config):
@@ -23,7 +23,9 @@ def test_main(api_type, title, purpose, severity, is_skip, url, method, data_typ
     :param get_db: db数据
     :return:
     """
-    production_url = yamlOptions('config/dev/requestDefault.yaml').read_yaml('server')['url']['uat_url']
+    env, production_url = get_env_config
+    # 默认设置为TEST环境,某些新增、修改等测试只能在测试库进行
+    env = 'DEV'
     # 设置allure样式
     allureReportConfig.dynamic_comment(feature=api_type, story=title, title=purpose,
                                        severity=severity, link=production_url + url)
@@ -37,8 +39,8 @@ def test_main(api_type, title, purpose, severity, is_skip, url, method, data_typ
         data_process.data_type = data_type
         data_process.handle_case(method, data)
         # 执行请求，返回响应结果
-        response_data = httpSamplerConfig(url=production_url, path=url, params=data_process.data, method= data_process.
-                                          method).httpSampler(data_process.data_type)
+        response_data = httpSamplerConfig(url=production_url, path=url, params=data_process.data, method=data_process.
+                                          method, env=env).httpSampler(data_process.data_type)
         # 提取后置参数
         data_process.handle_extra(extra, response_data.json())
         # 使用后置sql执行
